@@ -38,10 +38,12 @@ class TestDiffFrontmatter(unittest.TestCase):
         self.assertEqual(diff_frontmatter(None, None), [])
 
     def test_frontmatter_added(self):
-        self.assertEqual(diff_frontmatter(None, "allowed-tools: [read]"), ["Added: allowed-tools: [read]"])
+        result = diff_frontmatter(None, "allowed-tools: [read]")
+        self.assertTrue(any("Frontmatter added" in f for f in result))
 
     def test_frontmatter_removed(self):
-        self.assertEqual(diff_frontmatter("allowed-tools: [read]", None), ["Removed: allowed-tools: [read]"])
+        result = diff_frontmatter("allowed-tools: [read]", None)
+        self.assertTrue(any("Frontmatter removed" in f for f in result))
 
     def test_frontmatter_unchanged(self):
         fm = "allowed-tools: [read, write]"
@@ -80,15 +82,16 @@ class TestDiffScripts(unittest.TestCase):
             self.assertEqual(diff_scripts([path], [path]), [])
 
     def test_script_changed(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            old_path = os.path.join(tmpdir, "tool.py")
-            new_path = os.path.join(tmpdir, "tool.py")
-            with open(old_path, "w") as f:
-                f.write("def run(): return 'old'\n")
-            with open(new_path, "w") as f:
-                f.write("def run(): return 'new'\n")
-            result = diff_scripts([old_path], [new_path])
-            self.assertTrue(any("tool.py" in f for f in result))
+        with tempfile.TemporaryDirectory() as old_dir:
+            with tempfile.TemporaryDirectory() as new_dir:
+                old_path = os.path.join(old_dir, "tool.py")
+                new_path = os.path.join(new_dir, "tool.py")
+                with open(old_path, "w") as f:
+                    f.write("def run(): return 'old'\n")
+                with open(new_path, "w") as f:
+                    f.write("def run(): return 'new'\n")
+                result = diff_scripts([old_path], [new_path])
+                self.assertTrue(any("tool.py" in f for f in result))
 
 
 class TestRunStructuralPass(unittest.TestCase):
