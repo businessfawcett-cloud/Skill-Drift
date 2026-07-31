@@ -5,9 +5,66 @@ import re
 
 FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
 
+NON_TEXT_EXTENSIONS = {
+    ".png", ".jpg", ".jpeg", ".gif", ".svg", ".ico", ".pdf",
+    ".zip", ".tar", ".gz", ".bz2", ".xz", ".7z", ".rar",
+    ".pyc", ".pyo", ".so", ".dylib", ".dll", ".exe", ".bin",
+    ".woff", ".woff2", ".ttf", ".eot", ".otf",
+    ".mp3", ".mp4", ".wav", ".ogg", ".avi", ".mov",
+    ".db", ".sqlite", ".sqlite3",
+}
+
+UNDETERMINABLE_FILES = {
+    "Dockerfile",
+    "docker-compose.yml",
+    "docker-compose.yaml",
+    "Makefile",
+    "makefile",
+    "GNUmakefile",
+}
+
+
+def _is_binary(filepath):
+    try:
+        with open(filepath, "rb") as f:
+            chunk = f.read(8192)
+        if b"\x00" in chunk:
+            return True
+        try:
+            chunk.decode("utf-8")
+            return False
+        except UnicodeDecodeError:
+            return True
+    except (IOError, OSError):
+        return True
+
+
+def _has_runtime_template(directory):
+    template_indicators = [
+        "template", "jinja", "jinja2", "mako", "handlebars",
+        "ejs", "pug", "nunjucks", "liquid", "twig",
+        "cookiecutter", "scaffold", "generator",
+        "install.sh", "setup.sh", "build.sh",
+        "package.json", "setup.py", "pyproject.toml",
+        "Makefile", "makefile",
+    ]
+    for root, _dirs, files in os.walk(directory):
+        for fname in files:
+            if fname in template_indicators:
+                return True
+            lower = fname.lower()
+            if any(ind.lower() in lower for ind in ["template", "jinja", "cookiecutter", "scaffold"]):
+                return True
+    return False
+
 
 def find_skill_files(directory):
-    results = {"skill_md": None, "scripts": [], "frontmatter": None}
+    results = {
+        "skill_md": None,
+        "scripts": [],
+        "frontmatter": None,
+        "undeterminable_files": [],
+    }
 
     skill_md_path = os.path.join(directory, "SKILL.md")
     if os.path.isfile(skill_md_path):
@@ -21,8 +78,15 @@ def find_skill_files(directory):
     script_exts = (".py", ".js", ".ts", ".sh", ".bash")
     for root, _dirs, files in os.walk(directory):
         for fname in files:
-            if any(fname.endswith(ext) for ext in script_exts):
-                results["scripts"].append(os.path.join(root, fname))
+            fpath = os.path.join(root, fname)
+            ext = os.path.splitext(fname)[1].lower()
+
+            if fname in UNDETERMINABLE_FILES:
+                results["undeterminable_files"].append(fname)
+            elif ext in NON_TEXT_EXTENSIONS or _is_binary(fpath):
+                results["undeterminable_files"].append(fname)
+            elif any(fname.endswith(s) for s in script_exts):
+                results["scripts"].append(fpath)
 
     return results
 
@@ -106,5 +170,17 @@ def run_structural_pass(old_dir, new_dir):
 
     script_diff = diff_scripts(old_files["scripts"], new_files["scripts"])
     findings.extend(script_diff)
+
+    for fname in old_files["undeterminable_files"]:
+        findings.append(f"Undeterminable file in old version: {fname}")
+    for fname in new_files["undeterminable_files"]:
+        findings.append(f"Undeterminable file in new version: {fname}")
+
+    if old_files["undeterminable_files"] or new_files["undeterminable_files"]:
+        undeterminable = True
+
+    if _has_runtime_template(old_dir) or _has_runtime_template(new_dir):
+        findings.append("Runtime-templated skill detected — cannot reliably diff installed output")
+        undeterminable = True
 
     return {"findings": findings, "undeterminable": undeterminable}

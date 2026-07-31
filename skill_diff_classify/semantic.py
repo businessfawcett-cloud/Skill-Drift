@@ -4,11 +4,15 @@ import json
 
 
 def _detect_provider():
+    provider = os.environ.get("SKILLSPECTOR_PROVIDER")
+    if provider:
+        return provider
+
     if os.environ.get("ANTHROPIC_API_KEY"):
         return "anthropic"
     if os.environ.get("OPENAI_API_KEY"):
         return "openai"
-    if os.environ.get("AWS_ACCESS_KEY_ID") and os.environ.get("AWS_REGION"):
+    if os.environ.get("AWS_REGION"):
         return "bedrock"
     return None
 
@@ -81,7 +85,8 @@ def call_llm(prompt_text):
     provider = _detect_provider()
     if provider is None:
         raise RuntimeError(
-            "No LLM provider configured. Set ANTHROPIC_API_KEY, OPENAI_API_KEY, or AWS_ACCESS_KEY_ID + AWS_REGION."
+            "No LLM provider configured. Set SKILLSPECTOR_PROVIDER (anthropic|openai|bedrock), "
+            "or set ANTHROPIC_API_KEY, OPENAI_API_KEY, or AWS_REGION."
         )
 
     callers = {
@@ -89,6 +94,12 @@ def call_llm(prompt_text):
         "openai": _call_openai,
         "bedrock": _call_bedrock,
     }
+
+    if provider not in callers:
+        raise RuntimeError(
+            f"Provider '{provider}' is not supported in v0.1. "
+            "Supported: anthropic, openai, bedrock."
+        )
 
     response = callers[provider](prompt_text)
     tier = _parse_tier(response)

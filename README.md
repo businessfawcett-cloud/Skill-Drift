@@ -40,23 +40,30 @@ skill-diff-classify --json ./skills/v1 ./skills/v2
 
 ## LLM provider setup
 
-Set one of the following environment variables to select a provider:
+Set `SKILLSPECTOR_PROVIDER` to select a provider, or set the provider's
+credential env var directly:
 
-| Provider | Required env vars |
+| Provider | Env var / credential |
 |---|---|
-| Anthropic CLI | `ANTHROPIC_API_KEY` |
-| OpenAI | `OPENAI_API_KEY` |
-| AWS Bedrock | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` |
+| Anthropic | `SKILLSPECTOR_PROVIDER=anthropic` + `ANTHROPIC_API_KEY` |
+| OpenAI | `SKILLSPECTOR_PROVIDER=openai` + `OPENAI_API_KEY` |
+| AWS Bedrock | `SKILLSPECTOR_PROVIDER=bedrock` + `AWS_REGION` |
 
 The tool uses the provider's CLI or API — no additional SDK installs required.
+If `SKILLSPECTOR_PROVIDER` is unset, the tool infers the provider from the
+credential env vars present.
 
 ## Limitations (v0.1)
 
 - No local/rule-based fallback — requires an LLM provider to be configured.
 - No fetching; both skill directories must be available locally.
 - Bundled script diff is text-level, not AST-level for v0.1.
-- Runtime-templated skills (skills that generate output at install time) are flagged as undeterminable.
-- Only `SKILL.md` and bundled scripts are analyzed; supporting files are ignored.
+- Binary files, Dockerfiles, and Makefiles are detected and flagged as
+  undeterminable rather than silently ignored.
+- Runtime-templated skills (detected via build scripts or template engine
+  config files) are flagged as undeterminable.
+- Only `SKILL.md` and bundled scripts are analyzed; supporting files are
+  ignored for classification purposes.
 
 ## Phase 0
 

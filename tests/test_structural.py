@@ -110,3 +110,60 @@ class TestRunStructuralPass(unittest.TestCase):
             with tempfile.TemporaryDirectory() as d2:
                 result = run_structural_pass(d1, d2)
                 self.assertTrue(result["undeterminable"])
+
+    def test_dockerfile_flagged_as_undeterminable(self):
+        with tempfile.TemporaryDirectory() as d1:
+            with tempfile.TemporaryDirectory() as d2:
+                for d in [d1, d2]:
+                    with open(os.path.join(d, "SKILL.md"), "w") as f:
+                        f.write("Do things.")
+                    with open(os.path.join(d, "Dockerfile"), "w") as f:
+                        f.write("FROM python:3.11\n")
+                result = run_structural_pass(d1, d2)
+                self.assertTrue(result["undeterminable"])
+                self.assertTrue(
+                    any("Dockerfile" in f for f in result["findings"])
+                )
+
+    def test_makefile_flagged_as_undeterminable(self):
+        with tempfile.TemporaryDirectory() as d1:
+            with tempfile.TemporaryDirectory() as d2:
+                for d in [d1, d2]:
+                    with open(os.path.join(d, "SKILL.md"), "w") as f:
+                        f.write("Do things.")
+                    with open(os.path.join(d, "Makefile"), "w") as f:
+                        f.write("all:\n\t@echo done\n")
+                result = run_structural_pass(d1, d2)
+                self.assertTrue(result["undeterminable"])
+                self.assertTrue(
+                    any("Makefile" in f for f in result["findings"])
+                )
+
+    def test_binary_file_flagged_as_undeterminable(self):
+        with tempfile.TemporaryDirectory() as d1:
+            with tempfile.TemporaryDirectory() as d2:
+                for d in [d1, d2]:
+                    with open(os.path.join(d, "SKILL.md"), "w") as f:
+                        f.write("Do things.")
+                    bin_path = os.path.join(d, "icon.png")
+                    with open(bin_path, "wb") as f:
+                        f.write(b"\x89PNG\r\n\x1a\n\x00\x00")
+                result = run_structural_pass(d1, d2)
+                self.assertTrue(result["undeterminable"])
+                self.assertTrue(
+                    any("icon.png" in f for f in result["findings"])
+                )
+
+    def test_runtime_template_flagged_as_undeterminable(self):
+        with tempfile.TemporaryDirectory() as d1:
+            with tempfile.TemporaryDirectory() as d2:
+                for d in [d1, d2]:
+                    with open(os.path.join(d, "SKILL.md"), "w") as f:
+                        f.write("Do things.")
+                    with open(os.path.join(d, "template.j2"), "w") as f:
+                        f.write("Hello {{ name }}\n")
+                result = run_structural_pass(d1, d2)
+                self.assertTrue(result["undeterminable"])
+                self.assertTrue(
+                    any("template" in f.lower() for f in result["findings"])
+                )
