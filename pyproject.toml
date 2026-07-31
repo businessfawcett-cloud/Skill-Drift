@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "skill-drift"
+version = "0.1.0"
+description = "Classify diffs between versions of AI agent skills as cosmetic or risk-relevant"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+skill-diff-classify = "skill_diff_classify.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["skill_diff_classify"]
+artifacts = ["skill_diff_classify/prompt.txt"]

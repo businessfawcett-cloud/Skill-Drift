@@ -1,0 +1,16 @@
+You are comparing two versions of an AI agent skill. Given the diff below between OLD and NEW versions:
+
+--- OLD ---
+{old_content}
+
+--- NEW ---
+{new_content}
+
+1. List concrete differences (added/removed/changed instructions, permissions, tool calls, external references).
+2. For each difference, state whether it changes what the skill asks the agent to do, what the skill can access, or what the skill claims to do vs. what it now does.
+3. Classify the overall diff as exactly one of:
+   - COSMETIC: wording/formatting only, no behavior change
+   - RISK_RELEVANT: any difference from step 2 is present
+4. Give a one-paragraph rationale citing the specific difference(s) that drove the classification. If no differences from step 2 exist, say so explicitly and classify COSMETIC.
+
+Do not infer intent beyond what the diff shows. If the skill's purpose statement is vague enough that you cannot tell whether a new capability is "consistent" with it, say that explicitly rather than guessing — this is a genuine hard case, not a gap to paper over.
