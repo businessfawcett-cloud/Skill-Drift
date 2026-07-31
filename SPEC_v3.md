@@ -66,7 +66,7 @@ Only if hand-labeling turns out to be genuinely hard to agree on (i.e., the cosm
 
 - **Frontmatter diff:** did `allowed-tools` / declared permissions change? For skills without structured frontmatter, flag as "undeterminable structurally" and force the semantic pass to carry the full decision.
 - **Bundled script diff:** for skills with scripts, diff at the language level (Python, JS/TS, shell). No exotic language support in v0.1.
-- **Out-of-scope signals:** binaries, Dockerfiles, Makefiles, runtime-templated output — detect and flag as `undeterminable: true`, do not silently ignore.
+- **Undeterminable signals:** binaries, Dockerfiles, Makefiles, and runtime-templated output are detected and flagged as `undeterminable: true` rather than silently ignored. A runtime-templated skill (detected via build scripts or template engine config files) is flagged as undeterminable because the installed output can't be reliably diffed from source.
 
 ### 3b. Semantic pass
 
