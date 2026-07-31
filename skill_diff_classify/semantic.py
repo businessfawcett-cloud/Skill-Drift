@@ -19,13 +19,13 @@ def _detect_provider():
 
 def _call_anthropic(prompt_text):
     result = subprocess.run(
-        ["anthropic", "prompt", prompt_text],
+        ["claude", "prompt", prompt_text],
         capture_output=True,
         text=True,
         timeout=120,
     )
     if result.returncode != 0:
-        raise RuntimeError(f"anthropic CLI failed: {result.stderr.strip()}")
+        raise RuntimeError(f"claude CLI failed: {result.stderr.strip()}")
     return result.stdout.strip()
 
 
@@ -48,7 +48,7 @@ def _call_bedrock(prompt_text):
         "messages": [{"role": "user", "content": prompt_text}],
     })
     result = subprocess.run(
-        ["aws", "bedrock", "invoke-model", "--model-id", "anthropic.claude-3-sonnet-20240229-v1:0", "--body", body],
+        ["aws", "bedrock", "invoke-model", "--model-id", "us.anthropic.claude-sonnet-4-6-20250915-v1:0", "--body", body],
         capture_output=True,
         text=True,
         timeout=120,
@@ -59,6 +59,14 @@ def _call_bedrock(prompt_text):
 
 
 def _parse_tier(response_text):
+    last_line = response_text.strip().splitlines()[-1].strip()
+    last_line_upper = last_line.upper()
+    if last_line_upper.startswith("TIER:") or last_line_upper.startswith("CLASSIFICATION:"):
+        tier_part = last_line_upper.split(":", 1)[1].strip()
+        if tier_part == "COSMETIC":
+            return "cosmetic"
+        if tier_part == "RISK_RELEVANT":
+            return "risk_relevant"
     text_upper = response_text.upper()
     if "COSMETIC" in text_upper and "RISK_RELEVANT" not in text_upper:
         return "cosmetic"
@@ -69,6 +77,9 @@ def _parse_tier(response_text):
 
 def _extract_rationale(response_text):
     lines = response_text.strip().splitlines()
+    # Exclude the last line if it's the structured tier output
+    if lines and (lines[-1].strip().upper().startswith("TIER:") or lines[-1].strip().upper().startswith("CLASSIFICATION:")):
+        lines = lines[:-1]
     rationale_lines = []
     in_rationale = False
     for line in lines:

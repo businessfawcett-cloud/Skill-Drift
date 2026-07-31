@@ -167,3 +167,14 @@ class TestRunStructuralPass(unittest.TestCase):
                 self.assertTrue(
                     any("template" in f.lower() for f in result["findings"])
                 )
+
+    def test_pyproject_not_flagged_as_undeterminable(self):
+        with tempfile.TemporaryDirectory() as d1:
+            with tempfile.TemporaryDirectory() as d2:
+                for d in [d1, d2]:
+                    with open(os.path.join(d, "SKILL.md"), "w") as f:
+                        f.write("Do things.")
+                    with open(os.path.join(d, "pyproject.toml"), "w") as f:
+                        f.write("[build-system]\n")
+                result = run_structural_pass(d1, d2)
+                self.assertFalse(result["undeterminable"])

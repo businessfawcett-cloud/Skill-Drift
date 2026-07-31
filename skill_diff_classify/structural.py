@@ -44,17 +44,19 @@ def _has_runtime_template(directory):
         "template", "jinja", "jinja2", "mako", "handlebars",
         "ejs", "pug", "nunjucks", "liquid", "twig",
         "cookiecutter", "scaffold", "generator",
-        "install.sh", "setup.sh", "build.sh",
-        "package.json", "setup.py", "pyproject.toml",
-        "Makefile", "makefile",
+        ".j2", ".jinja", ".jinja2", ".mako", ".handlebars",
+        ".hbs", ".ejs", ".liquid", ".twig",
     ]
     for root, _dirs, files in os.walk(directory):
         for fname in files:
+            lower = fname.lower()
             if fname in template_indicators:
                 return True
-            lower = fname.lower()
-            if any(ind.lower() in lower for ind in ["template", "jinja", "cookiecutter", "scaffold"]):
+            if any(ind in lower for ind in ["template", "jinja", "cookiecutter", "scaffold", "generator"]):
                 return True
+            for ext in (".j2", ".jinja", ".jinja2", ".mako", ".handlebars", ".hbs", ".ejs", ".liquid", ".twig"):
+                if lower.endswith(ext):
+                    return True
     return False
 
 

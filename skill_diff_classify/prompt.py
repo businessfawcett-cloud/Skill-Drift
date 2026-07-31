@@ -16,7 +16,11 @@ _PROMPT_TEMPLATE = """You are comparing two versions of an AI agent skill. Given
    - RISK_RELEVANT: any difference from step 2 is present
 4. Give a one-paragraph rationale citing the specific difference(s) that drove the classification. If no differences from step 2 exist, say so explicitly and classify COSMETIC.
 
-Do not infer intent beyond what the diff shows. If the skill's purpose statement is vague enough that you cannot tell whether a new capability is "consistent" with it, say that explicitly rather than guessing — this is a genuine hard case, not a gap to paper over."""
+Do not infer intent beyond what the diff shows. If the skill's purpose statement is vague enough that you cannot tell whether a new capability is "consistent" with it, say that explicitly rather than guessing — this is a genuine hard case, not a gap to paper over.
+
+On the last line, output exactly one of:
+TIER: COSMETIC
+TIER: RISK_RELEVANT"""
 
 
 def get_prompt(old_content, new_content):
