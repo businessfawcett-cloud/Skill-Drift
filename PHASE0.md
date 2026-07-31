@@ -20,6 +20,5 @@ Only if hand-labeling turns out to be genuinely hard to agree on (i.e., the cosm
 
 ## Candidate skills
 
-- `blader/humanizer` — 43 commits, real version history, maintainer-written version notes in README, Python-based, ~32k stars. Strong candidate; version notes provide free cross-check signal.
-- `AgriciDaniel/claude-seo` — commit history not yet pulled.
-- `VibeWithClaude/Claude-Code-SEO-skills` — commit history not yet pulled.
+1. `blader/humanizer` — 43 commits, real version history, maintainer-written version notes in README, Python-based, ~32k stars. Strong candidate; version notes provide free cross-check signal.
+2. `AgriciDaniel/claude-seo` — CHANGELOG with explicit cosmetic/risk-relevant self-labeling, including a tagged VULN severity entry. Rich ground-truth signal across the full classification range.
