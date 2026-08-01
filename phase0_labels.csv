@@ -1,0 +1,11 @@
+id,human_label_1,human_label_2,label_source_1,label_source_2,rationale_1,rationale_2,disagreement_note
+# Schema: id = manifest.csv diff id
+# human_label_1 / human_label_2 = "cosmetic" or "risk_relevant"
+# label_source = "blind" / "saw_claude_draft_first" / "saw_other_label_first"
+# rationale = one-line reason for the label
+# disagreement_note = optional note if the two labels disagree
+#
+# IMPORTANT: Do not fill human_label_1 or human_label_2 with Claude-generated
+# draft labels. Those are scaffolding for discussion only, not ground truth.
+# The only acceptable source for a human label is a real person's independent
+# judgment. Claude drafts are explicitly excluded from this file.

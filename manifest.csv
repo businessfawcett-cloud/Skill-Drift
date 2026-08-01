@@ -1,0 +1,34 @@
+id,repo,repo_url,old_ref,new_ref,commit_message,files_changed,lines_changed
+humanizer-01,humanizer,https://github.com/blader/humanizer,63def2e,b2564d3,"v2.0.0: Complete rewrite based on Wikipedia source",2,421
+humanizer-02,humanizer,https://github.com/blader/humanizer,b2564d3,47a6432,"v2.1.0: Add before/after examples for all patterns",2,411
+humanizer-03,humanizer,https://github.com/blader/humanizer,47a6432,9c448c8,"Cleanup pass: cut bloat and fix the aggressiveness contradiction (v2.6.0)",4,502
+humanizer-04,humanizer,https://github.com/blader/humanizer,9c448c8,a2ace14,"Add em/en dash cut, gap-filling tell, and diff-anchored pattern (v2.7.0)",3,45
+humanizer-05,humanizer,https://github.com/blader/humanizer,a2ace14,9600f2b,"Add style cadence AI tells (v2.8.0)",3,51
+humanizer-06,humanizer,https://github.com/blader/humanizer,9600f2b,028415d,"Fix Agent Skills version metadata (v2.8.3)",5,184
+humanizer-07,humanizer,https://github.com/blader/humanizer,028415d,a25db2d,"Add no-fabrication rule and invocation modes (v2.9.0)",3,72
+humanizer-08,humanizer,https://github.com/blader/humanizer,a25db2d,523374d,"Improve skill packaging and portability (v2.9.1)",7,361
+seo-01,claude-seo,https://github.com/AgriciDaniel/claude-seo,ffd84f8~1,ffd84f8,"security(seo-flow): drop Bash tool grant, add untrusted-WebFetch rule (VULN-A01, A05)",2,35
+seo-02,claude-seo,https://github.com/AgriciDaniel/claude-seo,4dc153d~1,4dc153d,"Audit fixes: add plugin.json, remove non-standard frontmatter, fix hook threshold, add SSRF prevention",4,29
+seo-03,claude-seo,https://github.com/AgriciDaniel/claude-seo,e04693c~1,e04693c,"v1.2.1: Chrome User-Agent fix for SSR frameworks, install.cat support",3,33
+seo-04,claude-seo,https://github.com/AgriciDaniel/claude-seo,66a7485~1,66a7485,"chore: remove em dashes from user-visible AGENTS.md + CHANGELOG.md (#85)",2,64
+seo-05,claude-seo,https://github.com/AgriciDaniel/claude-seo,7cc7bdc~1,7cc7bdc,"chore(meta): fix frontmatter key, dedup CODEOWNERS, and metadata drift",33,69
+seo-06,claude-seo,https://github.com/AgriciDaniel/claude-seo,ec2aef1~1,ec2aef1,"fix(security): close credential source-injection in DataForSEO Windows installer",1,48
+seo-07,claude-seo,https://github.com/AgriciDaniel/claude-seo,817887d~1,817887d,"fix(security): stop install-time credential source-injection in extension installers",4,213
+seo-08,claude-seo,https://github.com/AgriciDaniel/claude-seo,24c1b9c~1,24c1b9c,"security(sync_flow): SHA-256 lockfile + drift detection (VULN-A04)",3,102
+seo-09,claude-seo,https://github.com/AgriciDaniel/claude-seo,47baba8~1,47baba8,"security(sync_flow): URL allowlist, path containment, atomic writes, SHA-256 helper (VULN-A03, A08, A10)",2,68
+seo-10,claude-seo,https://github.com/AgriciDaniel/claude-seo,959be37~1,959be37,"security(sync_flow): anonymous-first token, 5 MB cap, 15s timeout (VULN-A02, A06, A07, A09)",2,81
+seo-11,claude-seo,https://github.com/AgriciDaniel/claude-seo,f29b0d0~1,f29b0d0,"fix(sync_flow): require HTTPS in URL validator, add @evil.com bypass test",2,14
+seo-12,claude-seo,https://github.com/AgriciDaniel/claude-seo,2ab83b5~1,2ab83b5,"feat: add scripts/sync_flow.py — GitHub API sync for FLOW prompt library",1,195
+seo-13,claude-seo,https://github.com/AgriciDaniel/claude-seo,c195f1b~1,c195f1b,"feat: add agents/seo-flow.md — FLOW prompt analyst subagent",1,49
+seo-14,claude-seo,https://github.com/AgriciDaniel/claude-seo,3edaefe~1,3edaefe,"feat: add skills/seo-flow/SKILL.md — FLOW framework entry-point skill",1,136
+seo-15,claude-seo,https://github.com/AgriciDaniel/claude-seo,6da0c4c~1,6da0c4c,"feat(agents): wire 8 fetcher subagents to scripts/render_page.py",8,46
+seo-16,claude-seo,https://github.com/AgriciDaniel/claude-seo,04187fc~1,04187fc,"fix(moz_api): migrate from deprecated JSON-RPC to v2 REST endpoints (#73)",1,155
+seo-17,claude-seo,https://github.com/AgriciDaniel/claude-seo,ef850b0~1,ef850b0,"fix(images): detect JS lazy-loaders (Perfmatters, EWWW, generic) - closes #41 (#95)",5,154
+seo-18,claude-seo,https://github.com/AgriciDaniel/claude-seo,ddee627~1,ddee627,"fix(gsc): derive site totals from dimensionless aggregate, not query-row sum (#130)",2,132
+seo-19,claude-seo,https://github.com/AgriciDaniel/claude-seo,eba939c~1,eba939c,"fix: add missing allowed-tools to 8 SKILL.md files dropped during rebase",8,63
+seo-20,claude-seo,https://github.com/AgriciDaniel/claude-seo,8514999~1,8514999,"chore(manifests): add category, author email, docs homepage, keywords (#84)",2,24
+seo-21,claude-seo,https://github.com/AgriciDaniel/claude-seo,e617fb2~1,e617fb2,"fix: version v1.8.0 -> v1.7.2, fix SKILL.md frontmatter, update CLAUDE.md counts",7,34
+seo-22,claude-seo,https://github.com/AgriciDaniel/claude-seo,162584a~1,162584a,"fix: update stale 6->7 subagent counts and correct hooks config",5,18
+seo-23,claude-seo,https://github.com/AgriciDaniel/claude-seo,30412bb~1,30412bb,"chore(deps): batch v1.9.9 dependency floor bumps (#76, #77, #78, #79, #80) (#94)",1,10
+seo-24,claude-seo,https://github.com/AgriciDaniel/claude-seo,3418a56~1,3418a56,"Fix lxml detection bug and enforce Python 3.10+ in installer",2,15
+seo-25,claude-seo,https://github.com/AgriciDaniel/claude-seo,ace2e2f~1,ace2e2f,"fix: pin MCP server package versions in extension install scripts (#64)",3,12
