@@ -123,6 +123,10 @@ Examples of ambiguous cases (use as reference, not rules):
 **Label:** RISK_RELEVANT
 **Reasoning:** Tool removal changes what the skill can do. Even if it's a security fix, it's a behavior change. Label risk-relevant.
 
+## Known gap: correctness/accuracy fixes
+
+Questions 1–4 cover permission changes, instruction changes, purpose changes, and cosmetic-only changes. A category that doesn't fit any of them: **correctness/accuracy fixes** — the skill's instructions, permissions, and purpose are unchanged, but a computation or output was wrong and is now fixed (e.g., a GSC aggregate calculation bug fix). These change what the skill *produces* without changing what it *does* or *claims to do*. The current 5-question procedure handles them via the ambiguous-default fallback (→ risk-relevant), but this is a distinct category that may deserve its own question or sub-case once enough labeled data reveals how often it recurs. Flagged now; not resolved.
+
 ## Inter-annotator agreement
 
 If you and a second labeler disagree on a diff, discuss it and try to reach consensus. If you can't agree, note the disagreement and both labels — the disagreement itself is data about where the classification line is fuzzy.
