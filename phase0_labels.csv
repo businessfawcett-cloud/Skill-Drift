@@ -1,11 +1,15 @@
-id,human_label_1,human_label_2,label_source_1,label_source_2,rationale_1,rationale_2,disagreement_note
-# Schema: id = manifest.csv diff id
-# human_label_1 / human_label_2 = "cosmetic" or "risk_relevant"
-# label_source = "blind" / "saw_claude_draft_first" / "saw_other_label_first"
-# rationale = one-line reason for the label
-# disagreement_note = optional note if the two labels disagree
+id,repo,repo_url,old_ref,new_ref,human_label_1,human_label_2,label_source,notes
+# Schema:
+#   id              — short unique id, e.g. humanizer-01
+#   repo            — local dir name after clone (e.g. humanizer, claude-seo)
+#   repo_url        — source repo URL, for provenance
+#   old_ref/new_ref — git refs (commit SHA or tag) bounding the diff
+#   human_label_1   — cosmetic | risk_relevant, from labeler 1
+#   human_label_2   — cosmetic | risk_relevant, from labeler 2 (leave blank if not yet labeled — do NOT fill with a guess)
+#   label_source    — "blind" | "saw_other_label_first" | "saw_claude_draft_first" — record this honestly, it affects whether agreement is meaningful
+#   notes           — one-line reason per labeler, or disagreement note
 #
-# IMPORTANT: Do not fill human_label_1 or human_label_2 with Claude-generated
-# draft labels. Those are scaffolding for discussion only, not ground truth.
-# The only acceptable source for a human label is a real person's independent
-# judgment. Claude drafts are explicitly excluded from this file.
+# THIS FILE IS INTENTIONALLY EMPTY OF DATA ROWS.
+# The 33-diff manifest from this conversation is the candidate pool — see manifest.csv.
+# Do not populate this file with Claude-drafted labels. Those are a separate, clearly-marked
+# reference file (claude_draft_labels.csv) and must never be merged into this one.
