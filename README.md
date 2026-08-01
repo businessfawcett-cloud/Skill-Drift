@@ -48,6 +48,7 @@ credential env var directly:
 | Anthropic | `SKILLSPECTOR_PROVIDER=anthropic` + `ANTHROPIC_API_KEY` |
 | OpenAI | `SKILLSPECTOR_PROVIDER=openai` + `OPENAI_API_KEY` |
 | AWS Bedrock | `SKILLSPECTOR_PROVIDER=bedrock` + `AWS_REGION` |
+| Groq | `SKILLSPECTOR_PROVIDER=groq` + `GROQ_API_KEY` |
 
 The tool uses the provider's CLI or API — no additional SDK installs required.
 If `SKILLSPECTOR_PROVIDER` is unset, the tool infers the provider from the

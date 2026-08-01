@@ -14,6 +14,8 @@ def _detect_provider():
         return "openai"
     if os.environ.get("AWS_REGION"):
         return "bedrock"
+    if os.environ.get("GROQ_API_KEY"):
+        return "groq"
     return None
 
 
@@ -55,6 +57,18 @@ def _call_bedrock(prompt_text):
     )
     if result.returncode != 0:
         raise RuntimeError(f"aws bedrock CLI failed: {result.stderr.strip()}")
+    return result.stdout.strip()
+
+
+def _call_groq(prompt_text):
+    result = subprocess.run(
+        ["groq", "chat", "--model", "llama3-8b-8192", "--message", prompt_text],
+        capture_output=True,
+        text=True,
+        timeout=120,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f"groq CLI failed: {result.stderr.strip()}")
     return result.stdout.strip()
 
 
@@ -104,12 +118,13 @@ def call_llm(prompt_text):
         "anthropic": _call_anthropic,
         "openai": _call_openai,
         "bedrock": _call_bedrock,
+        "groq": _call_groq,
     }
 
     if provider not in callers:
         raise RuntimeError(
             f"Provider '{provider}' is not supported in v0.1. "
-            "Supported: anthropic, openai, bedrock."
+            "Supported: anthropic, openai, bedrock, groq."
         )
 
     response = callers[provider](prompt_text)
